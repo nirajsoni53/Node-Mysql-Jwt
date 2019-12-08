@@ -1,5 +1,6 @@
 const express = require('express');
-const verifyToken = require('./middleware/verifyToken');
+const verifyToken = require('../middleware/verifyToken');
+const {signUp} =  require('../controller/user-controller');
 const router = express.Router();
 
 /**
@@ -10,3 +11,6 @@ const router = express.Router();
 
 router.use(verifyToken);
 
+userRouter.post('/signUp',verifyToken,signUp);
+
+module.exports=userRouter;

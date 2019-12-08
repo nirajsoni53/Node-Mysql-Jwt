@@ -7,7 +7,7 @@ var userLoginCheck = require('./middleware/userLoginCheck');
 var findAllUsers = require('./middleware/findAllUsers');
 var welcome = require('./middleware/welcome');
 
-var port = process.env.PORT || 4200;
+var port = process.env.PORT || 5000;
 
 //var twilio = require('twilio');
 var app  = express();
