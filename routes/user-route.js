@@ -1,7 +1,7 @@
 const express = require('express');
 const verifyToken = require('../middleware/verifyToken');
 const {signUp} =  require('../controller/user-controller');
-const router = express.Router();
+const userRouter = express.Router();
 
 /**
  * Added Middleware
@@ -9,8 +9,8 @@ const router = express.Router();
  * before serve any request
  */
 
-router.use(verifyToken);
+//userRouter.use(verifyToken);
 
-userRouter.post('/signUp',verifyToken,signUp);
+//userRouter.post('/signUp',signUp);
 
 module.exports=userRouter;
