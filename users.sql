@@ -10,6 +10,7 @@ CREATE TABLE `user` (
   `firstName` varchar(20) NOT NULL,
   `lastName` varchar(20) NOT NULL,
   `createdDate` datetime DEFAULT NULL,
+  `type` varchar(10) NOT NULL DEFAULT 'Admin',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1
 

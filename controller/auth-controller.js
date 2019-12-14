@@ -22,7 +22,12 @@ exports.signUp = (req, res) => {
             res.json({ "Error": true, "Message": "Invalid Request" });
         }
         else {
-            rows.length == 0 ? saveUser(res, post) : res.json({ "Error": false, "Message": "Email Id already registered" });;
+            if(rows.length == 0){
+                saveUser(res, post);
+            }
+            else{
+                res.json({ "Error": false, "Message": "Email Id already registered" });
+            }
         }
     });
 }
@@ -66,14 +71,14 @@ exports.login = (req, res) => {
 }
 
 function saveUser(res, post) {
-    var query = "INSERT INTO  ?? SET  ?";
+    var query = "INSERT INTO ?? SET ?";
     var table = ["user"];
     query = mysql.format(query, table);
     connection.query(query, post, function (err, rows) {
         if (err) {
             res.json({ "Error": true, "Message": "Invalid Request" });
         } else {
-            res.json({ "Error": false, "Message": "Success" });
+            res.json({ "Error": false, "Message": "Registration Success" });
         }
     });
 }
