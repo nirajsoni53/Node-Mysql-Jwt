@@ -20,3 +20,41 @@ exports.save = (req, res) => {
         }
     });
 }
+
+exports.getItem = (req, res) => {
+    var paginationData = {
+        currentPage: req.body.currentPage,
+        numberOfRecords: req.body.numberOfRecords
+    };
+
+    var query = "SELECT * FROM ?? LIMIT ?,?";
+    var table = ["item",paginationData.currentPage,paginationData.numberOfRecords];
+    query = mysql.format(query, table);
+
+    connection.query(query,function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Invalid Request" });
+        }
+        else {
+            res.json(rows);
+        }
+    });
+}
+
+exports.getCount = (req, res) => {
+
+    var query = "SELECT COUNT(??) AS count  FROM ??";
+    var table = ["id","item"];
+    query = mysql.format(query, table);
+
+    connection.query(query,function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Invalid Request" });
+        }
+        else {
+            res.json(rows[0]);
+        }
+    });
+}
+
+

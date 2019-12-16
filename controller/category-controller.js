@@ -19,3 +19,18 @@ exports.save = (req, res) => {
         }
     });
 }
+
+
+exports.getCategory = (req, res) => {
+    var query = "SELECT * FROM ??";
+    var table = ["category"];
+    query = mysql.format(query, table);
+    connection.query(query,function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Invalid Request" });
+        }
+        else {
+            res.json(rows);
+        }
+    });
+}

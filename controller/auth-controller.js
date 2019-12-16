@@ -22,10 +22,10 @@ exports.signUp = (req, res) => {
             res.json({ "Error": true, "Message": "Invalid Request" });
         }
         else {
-            if(rows.length == 0){
+            if (rows.length == 0) {
                 saveUser(res, post);
             }
-            else{
+            else {
                 res.json({ "Error": false, "Message": "Email Id already registered" });
             }
         }
@@ -38,15 +38,25 @@ exports.login = (req, res) => {
         email: req.body.email
     }
 
-    var query = "SELECT * FROM ?? WHERE ??=? AND ??=?";
+    var query = "SELECT ??,??,??,?? FROM ?? WHERE ??=? AND ??=?";
 
-    var table = ["user", "password", md5(post.password), "email", post.email];
+    var table = [
+        "email",
+        "firstName",
+        "lastName",
+        "type",
+        "user",
+        "password",
+        md5(post.password),
+        "email",
+        post.email
+    ];
 
     query = mysql.format(query, table);
 
     connection.query(query, function (err, rows) {
         if (err) {
-            res.json({ "Error": true, "Message": "Error executing MySQL query" });
+            res.json({ "error": true, "message": "Error executing MySQL query" });
         }
         else {
 
@@ -56,16 +66,15 @@ exports.login = (req, res) => {
                 });
 
                 res.json({
-                    success: true,
+                    error: false,
                     message: 'Token generated',
                     token: token,
                     currUser: rows[0]
                 });
             }
             else {
-                res.json({ "Error": true, "Message": "wrong email/password combination" });
+                res.json({ "error": true, "message": "wrong email/password combination" });
             }
-
         }
     });
 }
