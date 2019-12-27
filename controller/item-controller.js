@@ -27,10 +27,43 @@ exports.getItem = (req, res) => {
         numberOfRecords: req.body.numberOfRecords
     };
 
-    var query = "SELECT * FROM ?? LIMIT ?,?";
-    var table = ["item",paginationData.currentPage,paginationData.numberOfRecords];
-    query = mysql.format(query, table);
+    var search ={
+        name: req.body.search.name,
+        discription: req.body.search.discription
+    }
 
+    var query = "SELECT * FROM ??";
+
+    var table = ["item"];
+
+    if(search.name != '' || search.discription != ''){
+        query = query.concat(' WHERE');
+    }
+ 
+    if(search.name != '' && search.discription == ''){
+        query = query.concat(' ?? LIKE ?');
+        table.push("name");
+        table.push("%"+search.name+"%");
+    }
+    else if(search.name == '' && search.discription != ''){
+        query = query.concat(' ?? LIKE ?');
+        table.push("discription");
+        table.push("%"+search.discription+"%");
+    }
+    else if(search.name != '' && search.discription != '')
+    {
+        query = query.concat(' ?? LIKE ? AND ?? LIKE ?');
+        table.push("name");
+        table.push("%"+search.name+"%");
+        table.push("discription");
+        table.push("%"+search.discription+"%");
+    }
+
+    query = query.concat(' LIMIT ?,?');
+    table.push(paginationData.currentPage);
+    table.push(paginationData.numberOfRecords);
+    
+    query = mysql.format(query, table);
     connection.query(query,function (err, rows) {
         if (err) {
             res.json({ "Error": true, "Message": "Invalid Request" });

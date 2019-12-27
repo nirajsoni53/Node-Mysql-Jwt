@@ -1,9 +1,8 @@
 const express = require('express');
-const {save,getCategory,getCount} =  require('../controller/category-controller');
-const authRouter = express.Router();
+const {save,getCategory} =  require('../controller/category-controller');
+const categoryRouter = express.Router();
 
-authRouter.post('/save',save);
-authRouter.post('/getCategory',getCategory);
-authRouter.get('/getCount',getCount);
+categoryRouter.post('/save',save);
+categoryRouter.get('/getCategory',getCategory);
 
-module.exports=authRouter;
+module.exports=categoryRouter;

@@ -9,8 +9,9 @@ var findAllUsers = require('./middleware/findAllUsers');
 var welcome = require('./middleware/welcome');
 var userRoute = require('./routes/user-route');
 var authRoute = require('./routes/auth-route');
-var categoryRoute = require('./routes/category-route');
+var createCategoryRoute = require('./routes/create-category-route');
 var itemRoute = require('./routes/item-route');
+var categoryRoute = require('./routes/category-route');
 
 var port = process.env.PORT || 5000;
 
@@ -35,8 +36,9 @@ app.use('/api', apiRoutes); */
 
 app.use('/auth',authRoute);
 app.use('/user',userRoute);
-app.use('/admin/category',categoryRoute);
+app.use('/admin/category',createCategoryRoute);
 app.use('/admin/item',itemRoute);
+app.use('/category',categoryRoute);
 
 app.listen(port, function() {
     console.log('Express server listening on port ' +port);

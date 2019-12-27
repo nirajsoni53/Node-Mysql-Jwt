@@ -1,15 +1,18 @@
 {
-  "name": "Online Beaty Care",
+  "name": "Online Beauty Care",
   "version": "0.0.1",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "MD5": "~1.2.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.12.4",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "express": "~4.12.2",
     "jsonwebtoken": "^5.4.1",
-    "mysql": "~2.5.5"
+    "mysql": "~2.5.5",
+    "nodemailer": "^6.4.2"
   }
 }
