@@ -1,9 +1,9 @@
 const express = require('express');
-const {save,getItem,getCount} =  require('../controller/item-controller');
-const authRouter = express.Router();
+const { getSalonItem, getItemByCategoryId,saveItem} = require('../controller/item-controller');
+const itemRouter = express.Router();
 
-authRouter.post('/save',save);
-authRouter.post('/getItem',getItem);
-authRouter.get('/getCount',getCount);
+itemRouter.get('/getSalonItem', getSalonItem);
+itemRouter.post('/saveItem', saveItem);
+itemRouter.get('/getItemByCategoryId/:categoryId', getItemByCategoryId);
 
-module.exports=authRouter;
+module.exports = itemRouter;

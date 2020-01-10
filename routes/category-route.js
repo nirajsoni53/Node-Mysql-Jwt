@@ -1,8 +1,8 @@
 const express = require('express');
-const {save,getCategory} =  require('../controller/category-controller');
+const {saveCategory,getCategory,getSalonCategory} =  require('../controller/category-controller');
 const categoryRouter = express.Router();
 
-categoryRouter.post('/save',save);
+categoryRouter.post('/saveCategory',saveCategory);
 categoryRouter.get('/getCategory',getCategory);
-
+categoryRouter.get('/getSalonCategory',getSalonCategory);
 module.exports=categoryRouter;

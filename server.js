@@ -1,45 +1,38 @@
 var express = require("express");
-var bodyParser  = require("body-parser");
+var bodyParser = require("body-parser");
 const cors = require('cors');
 
-var verifyToken = require('./middleware/verifyToken');
-var addNewUser = require('./middleware/addNewUser');
-var userLoginCheck = require('./middleware/userLoginCheck');
-var findAllUsers = require('./middleware/findAllUsers');
-var welcome = require('./middleware/welcome');
 var userRoute = require('./routes/user-route');
 var authRoute = require('./routes/auth-route');
 var createCategoryRoute = require('./routes/create-category-route');
+var createItemRoute = require('./routes/create-item-route');
 var itemRoute = require('./routes/item-route');
 var categoryRoute = require('./routes/category-route');
+const multipart = require('connect-multiparty');
+const multipartMiddleware = multipart({ uploadDir: './uploads' });
 
 var port = process.env.PORT || 5000;
 
-//var twilio = require('twilio');
-var app  = express();
+/* App Configuration */
+var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-/* app.post('/signup', addNewUser);
-app.post('/userlogin', userLoginCheck);
+app.post('/api/upload', multipartMiddleware, (req, res) => {
+    res.json({ 'message': req.files });
+});
 
-var apiRoutes = express.Router();
-apiRoutes.use(bodyParser.urlencoded({ extended: true }));
-apiRoutes.use(bodyParser.json());
-//route middleware to verify a token 
-apiRoutes.use(verifyToken);
-apiRoutes.get('/', welcome);
-apiRoutes.get('/users', findAllUsers);
+/* Router Configuration */
+app.use('/auth', authRoute);
+app.use('/user', userRoute);
+app.use('/admin/category', createCategoryRoute);
+app.use('/admin/item', createItemRoute);
+app.use('/category', categoryRoute);
+app.use('/item', itemRoute);
 
-app.use('/api', apiRoutes); */
 
-app.use('/auth',authRoute);
-app.use('/user',userRoute);
-app.use('/admin/category',createCategoryRoute);
-app.use('/admin/item',itemRoute);
-app.use('/category',categoryRoute);
-
-app.listen(port, function() {
-    console.log('Express server listening on port ' +port);
+/* Serevr Start */
+app.listen(port, function () {
+    console.log('Express server listening on port ' + port);
 });
