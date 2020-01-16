@@ -9,8 +9,7 @@ const connection = require("../database");
 
 exports.signUp = (req, res) => {
     var post = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        fullName: req.body.fullName,
         email: req.body.email,
         password: md5(req.body.password),
     };
@@ -26,7 +25,7 @@ exports.signUp = (req, res) => {
         }
         else {
             if (rows.length == 0) {
-                saveUser(res, post);
+                saveUser(req, res, post);
             }
             else {
                 res.json({ "Error": false, "Message": "Email Id already registered" });
@@ -41,9 +40,10 @@ exports.login = (req, res) => {
         email: req.body.email
     }
 
-    var query = "SELECT ??,??,??,?? FROM ?? WHERE ??=? AND ??=?";
+    var query = "SELECT ??,??,??,??,?? FROM ?? WHERE ??=? AND ??=?";
 
     var table = [
+        "id",
         "email",
         "firstName",
         "lastName",
@@ -85,7 +85,7 @@ exports.login = (req, res) => {
     });
 }
 
-function saveUser(res, post) {
+function saveUser(req, res, post) {
     var query = "INSERT INTO ?? SET ?";
     var table = ["user"];
     query = mysql.format(query, table);
@@ -93,9 +93,30 @@ function saveUser(res, post) {
         if (err) {
             res.json({ "Error": true, "Message": "Invalid Request" });
         } else {
+            saveParlorInfo(req,res,rows.insertId);
             res.json({ "Error": false, "Message": "Registration Success" });
         }
     });
+}
+
+function saveParlorInfo(req, res, id) {
+    var userDetails = {
+        salon_name: req.body.salonName,
+        mobile: req.body.mobile,
+        address: req.body.address,
+        image_path: req.files.uploads[0].path,
+        user_id: id
+    };
+
+    var query = "INSERT INTO ?? SET ?";
+    var table = ["parlor_info"];
+    query = mysql.format(query, table);
+    connection.query(query, userDetails, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Invalid Request" });
+        }
+    });
+
 }
 
 function saveResetToken(email, userId, res) {
@@ -210,7 +231,7 @@ exports.updatePassword = (req, res) => {
                 .status(409)
                 .json({ message: 'Token does not exist' });
         }
-        updatePassword(password, rows[0].user_id,res);
+        updatePassword(password, rows[0].user_id, res);
     });
 }
 
@@ -220,11 +241,11 @@ function updatePassword(password, id, res) {
     let table = ["user", "password", password, "id", id];
     query = mysql.format(query, table);
     connection.query(query, function (err, rows) {
-        deleteToken(id,res);
+        deleteToken(id, res);
     });
 }
-function deleteToken(id, res){
-   
+function deleteToken(id, res) {
+
     let query = "DELETE FROM ?? WHERE ??=?"
     let table = ["reset_token", "user_id", id];
     query = mysql.format(query, table);
