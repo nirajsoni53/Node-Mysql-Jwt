@@ -7,12 +7,12 @@
   "dependencies": {
     "MD5": "~1.2.2",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.12.4",
+    "body-parser": "^1.20.1",
     "connect-multiparty": "^2.2.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "express": "~4.12.2",
-    "jsonwebtoken": "^5.4.1",
+    "express": "~4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mysql": "~2.5.5",
     "nodemailer": "^6.4.2"
   }
